@@ -1,12 +1,12 @@
 {
     "type": "module",
     "name": "aaaa-discordbot",
-    "version": "4.9.5",
+    "version": "1.0.0",
     "description": "",
     "main": "bot.js",
     "scripts": {
-        "start": "node bot.js",
-        "production": "pm2 start bot.js",
+        "start": "pm2 start bot.js",
+        "test": "node bot.js",
         "unregister": "node SlashCommands/unRegister.js",
         "register": "node register.js",
         "lint": " npx eslint ./",
