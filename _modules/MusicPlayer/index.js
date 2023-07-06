@@ -38,7 +38,6 @@ export default class MusicPlayer {
 
             const isPlayList = this.isPlayList(musicURL);
             if (isPlayList) {
-
                 const res = await play.playlist_info(musicURL);
                 musicName = res.title;
 
@@ -65,16 +64,42 @@ export default class MusicPlayer {
             }
 
             if (this.isPlaying[guildID]) {
-                interaction.reply({ content: `歌曲加入隊列：${musicName}` });
+                interaction.reply({
+                    embeds: [{
+                        author: {
+                            name: "Added to queue"
+                        },
+                        title: musicName,
+                        url: musicURL,
+                        color: 0x00f5e4,
+                        footer: {
+                            text: "Music Player",
+                            icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                        },
+                        timestamp: new Date()
+                    }]
+                });
             } else {
                 this.isPlaying[guildID] = true;
-                interaction.reply({ content: `🎵 播放音樂：${this.queue[guildID][0].name}` });
-                this.playMusic(interaction, this.queue[guildID][0], true);
+                this.playMusic(interaction, this.queue[guildID][0], false);
             }
 
         } catch (e) {
             console.log(e);
-            interaction.reply({ content: "Please enter a valid YouTube URL!" });
+            interaction.reply({
+                embeds: [{
+                    author: {
+                        name: "Error"
+                    },
+                    title: "Please enter a valid YouTube URL",
+                    color: 0xff0000,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
         }
     }
 
@@ -86,7 +111,20 @@ export default class MusicPlayer {
         }
         else {
             this.isPlaying[guildID] = false;
-            interaction.reply("無法跳過任何音樂");
+            interaction.reply({
+                embeds: [{
+                    author: {
+                        name: "Error"
+                    },
+                    title: "Can't skip any music",
+                    color: 0xff0000,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
         }
     }
 
@@ -95,8 +133,21 @@ export default class MusicPlayer {
 
         try {
             if (!isReplied) {
-                const content = `🎵 播放音樂：${musicInfo.name}`;
-                interaction.reply(content);
+                interaction.reply({
+                    embeds: [{
+                        author: {
+                            name: "Now Playing"
+                        },
+                        title: musicInfo.name,
+                        url: musicInfo.url,
+                        color: 0x9f00f5,
+                        footer: {
+                            text: "Music Player",
+                            icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                        },
+                        timestamp: new Date()
+                    }]
+                });
             }
 
             const stream = await play.stream(musicInfo.url);
@@ -118,15 +169,26 @@ export default class MusicPlayer {
             this.queue[guildID].shift();
 
             player.on("stateChange", (oldState, newState) => {
-
                 if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
                     this.playNextMusic(interaction);
                 }
-
             });
         } catch (e) {
             console.log(e);
-            interaction.channel.send("歌曲發生錯誤...");
+            interaction.channel.send({
+                embeds: [{
+                    author: {
+                        name: "Error"
+                    },
+                    title: "Error processing music",
+                    color: 0xff0000,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
 
             this.queue[guildID].shift();
 
@@ -139,9 +201,35 @@ export default class MusicPlayer {
         const guildID = interaction.guildId;
         if (this.dispatcher[guildID]) {
             this.dispatcher[guildID].unpause();
-            interaction.reply({ content: "恢復播放" });
+            interaction.reply({
+                embeds: [{
+                    author: {
+                        name: "Resume"
+                    },
+                    title: "Resume playing music",
+                    color: 0x00f549,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
         } else {
-            interaction.reply({ content: "無法繼續播放任何音樂" });
+            interaction.reply({
+                embeds: [{
+                    author: {
+                        name: "Error"
+                    },
+                    title: "Can't resume any music",
+                    color: 0xff0000,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
         }
     }
 
@@ -150,10 +238,36 @@ export default class MusicPlayer {
         const guildID = interaction.guildId;
         if (this.dispatcher[guildID]) {
             this.dispatcher[guildID].pause();
-            interaction.reply({ content: "暫停播放" });
+            interaction.reply({
+                embeds: [{
+                    author: {
+                        name: "Pause"
+                    },
+                    title: "Pause current music",
+                    color: 0xf5ed00,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
         }
         else {
-            interaction.reply({ content: "無法暫停任何音樂" });
+            interaction.reply({
+                embeds: [{
+                    author: {
+                        name: "Error"
+                    },
+                    title: "Can't pause any music",
+                    color: 0xff0000,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
         }
     }
 
@@ -185,17 +299,42 @@ export default class MusicPlayer {
 
             interaction.reply({ content: queueString });
         } else {
-            interaction.reply({ content: "目前隊列中沒有歌曲" });
+            interaction.reply({
+                embeds: [{
+                    author: {
+                        name: "Error"
+                    },
+                    title: "There are no music in queue",
+                    color: 0xff0000,
+                    footer: {
+                        text: "Music Player",
+                        icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                    },
+                    timestamp: new Date()
+                }]
+            });
         }
     }
 
     // 刪除隊列中播放清單的所有歌曲
-    deletePlayList(interaction) {
+    deletePlayList(interaction, musicID) {
         const guildID = interaction.guildId;
-        const id = interaction.options.getString("id").trim();
 
-        this.queue[guildID] = this.queue[guildID].filter(q => q.id !== id);
-        interaction.reply({ content: `刪除ID為 ${id} 的播放清單歌曲` });
+        this.queue[guildID] = this.queue[guildID].filter(q => q.id !== musicID);
+        interaction.reply({
+            embeds: [{
+                author: {
+                    name: "Delete"
+                },
+                title: `Delete music ${musicID} from queue`,
+                color: 0xf58300,
+                footer: {
+                    text: "Music Player",
+                    icon_url: "https://i.ibb.co/CnqFvTF/image-2023-07-06-152548513.jpg"
+                },
+                timestamp: new Date()
+            }]
+        });
     }
 
     leave(interaction) {

@@ -26,8 +26,8 @@ export default {
             )
         )
         .addSubcommand(subcommand => subcommand
-            .setName("next")
-            .setDescription("Play next music")
+            .setName("skip")
+            .setDescription("Skip current music")
         )
         .addSubcommand(subcommand => subcommand
             .setName("pause")
@@ -41,6 +41,16 @@ export default {
             .setName("list")
             .setDescription("List all queued music")
         )
+        // .addSubcommand(subcommand => subcommand
+        //     .setName("delete")
+        //     .setDescription("Delete a music in queue")
+        //     .addIntegerOption(option =>
+        //         option
+        //             .setName("id")
+        //             .setDescription("Provide the ID of the music to delete")
+        //             .setRequired(true)
+        //     )
+        // )
         .setDescription("Use a music player"),
 
     async execute(client, interaction) {
@@ -64,7 +74,7 @@ export default {
                 break;
             }
 
-            case "next": {
+            case "skip": {
                 player.playNextMusic(interaction);
                 break;
             }
@@ -83,6 +93,12 @@ export default {
                 player.nowQueue(interaction);
                 break;
             }
+
+            // case "delete": {
+            //     const musicID = interaction.options.getInteger("id");
+            //     player.deletePlayList(interaction, musicID);
+            //     break;
+            // }
 
             default: {
                 // Show graphic player
