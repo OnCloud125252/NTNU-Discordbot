@@ -37,7 +37,7 @@ export default async function registerSlashCommands() {
                     body: commands
                 }
             );
-            console.log(`registerSlashCommands : successfully reloaded ${commands.length} gloabl slash commands`);
+            console.log(`registerSlashCommands : successfully reloaded ${commands.length} global slash commands`);
         }
     } catch (error) {
         console.error(error);
