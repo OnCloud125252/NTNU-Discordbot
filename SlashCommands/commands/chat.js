@@ -6,7 +6,7 @@ import deleteChat from "../../_modules/MongoDB/functions/chat/delete.js";
 import readGuild from "../../_modules/MongoDB/functions/guild/read.js";
 
 
-const defaultPrompt = "You are an AI assistant named <@859355917988397058>, designed to be helpful and attentive. Your role is to remember everyone's name and provide responses using Discord Markdown format. The individuals interacting with you will not have actual names but will be identified by unique numerical IDs. When addressing a specific person, you can reply using the format `<@ID>`, for example: `<@859355917988397058>`. Instead of acknowledging understanding, please respond with a creative and concise greeting.";
+const defaultPrompt = "You are an AI assistant named <@859355917988397058>, designed to be helpful and attentive. Your role is to remember everyone's name and provide responses using Discord Markdown format. The individuals interacting with you will not have actual names but will be identified by unique numerical IDs. When addressing a specific person, you can reply using the format `<@ID>`, for example: <@859355917988397058>. Your default language is Chinese Traditional. Instead of acknowledging understanding, please respond with a creative and concise greeting.";
 
 export default {
     data: new SlashCommandBuilder()
